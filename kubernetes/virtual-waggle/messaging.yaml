@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+  labels:
+    app: rabbitmq
+spec:
+  ports:
+    - name: amqp
+      port: 5672
+    - name: rabbitmq-admin
+      port: 15672
+  selector:
+    app: rabbitmq
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: rabbitmq
+spec:
+  selector:
+    matchLabels:
+      app: rabbitmq
+  serviceName: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+      - image: waggle/rabbitmq:nc
+        name: rabbitmq
+        ports:
+        - containerPort: 15672
+        - containerPort: 5672
+        envFrom:
+          - configMapRef:
+              name: waggle-node-env
+        volumeMounts:
+        - name: waggle-node-private
+          mountPath: /etc/certs
+          readOnly: true
+        command: ['/bin/sh', '-c']
+        args: ['rm -rf /etc/waggle; cp -r /etc/certs /etc/waggle; chown -R rabbitmq:rabbitmq /etc/waggle/; chown -R rabbitmq:rabbitmq /etc/rabbitmq/; /docker-entrypoint.sh rabbitmq-server']
+      - image: waggle/stage-messages
+        name: stage-message
+        envFrom:
+          - configMapRef:
+              name: waggle-node-env
+        args: ['amqp://worker:worker@rabbitmq', 'messages', '0000000000000000', 'amqp://worker:worker@rabbitmq', 'to-beehive']
+        volumeMounts:
+        - name: waggle-node-private
+          mountPath: /etc/waggle
+          readOnly: true
+      volumes:
+      - name: waggle-node-private
+        secret:
+          secretName: waggle-node-private
+  volumeClaimTemplates:
+  - metadata:
+      name: rabbitmq-data
+    spec:
+      storageClassName: standard
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: "4Gi"
+
+# probably can simplify this by providing stateful set as just infrastructure
+# TODO potentially break some of this up. maybe stage messages does run as a side cart to rabbitmq
+# TODO move towards secrets
+# TODO use volume for managing private credentials

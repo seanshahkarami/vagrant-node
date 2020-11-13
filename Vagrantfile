@@ -16,8 +16,3 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "shell", path: "provision.sh"
 end
-
-# TODO address the fact that once image paths are shared, other plugins
-# could overwrite contents or delete. this may just require a staging
-# dir where stuff gets put and a read only sharing dir where stuff gets
-# moved to

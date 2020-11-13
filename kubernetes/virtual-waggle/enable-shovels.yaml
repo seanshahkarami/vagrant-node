@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: shovels
+spec:
+  template:
+    spec:
+      containers:
+      - image: waggle/shovelctl
+        name: shovelctl
+        args: ['enable']
+        envFrom:
+          - configMapRef:
+              name: waggle-node-env
+      restartPolicy: OnFailure

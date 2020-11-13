@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: playback
+spec:
+  selector:
+    matchLabels:
+      app: playback
+  template:
+    metadata:
+      labels:
+        app: playback
+    spec:
+      serviceAccountName: build-robot
+      containers:
+      - image: waggle/playback-server
+        name: playback
+        ports:
+        - containerPort: 8090
+      - image: nginx
+        name: nginx
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: playback
+spec:
+  selector:
+    app: playback
+  ports:
+    - name: stream
+      protocol: TCP
+      port: 8090
+      targetPort: 8090

@@ -1,0 +1,21 @@
+apiVersion: sagecontroller.k8s.io/v1alpha1
+kind: SagePlugin
+metadata:
+  name: temp-plugin
+spec:
+  name: temp-plugin
+  image: nginx:latest
+  runWhen:
+    - name: temperature
+      below: 5.0
+---
+apiVersion: sagecontroller.k8s.io/v1alpha1
+kind: SagePlugin
+metadata:
+  name: humid-plugin
+spec:
+  name: humid-plugin
+  image: nginx:latest
+  runWhen:
+    - name: humidity
+      above: 90.0
