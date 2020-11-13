@@ -14,5 +14,7 @@ Vagrant.configure("2") do |config|
     # VBoxManage controlvm :id webcam attach
   end
 
-  config.vm.provision "shell", path: "provision.sh"
+  config.vm.provision "shell", inline: <<-SCRIPT
+    curl -sfL https://get.k3s.io | sh -
+  SCRIPT
 end

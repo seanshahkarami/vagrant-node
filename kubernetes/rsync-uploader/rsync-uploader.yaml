@@ -16,20 +16,16 @@ spec:
         app.kubernetes.io/version: v0.0.1
     spec:
       containers:
-        image: busybox
+      - image: seanshahkarami/rsync-uploader
         name: rsync-uploader
         resources:
           limits:
-            cpu: 0.5
+            cpu: 250m
             memory: 20Mi
           requests:
-            cpu: 0.5
+            cpu: 250m
             memory: 20Mi
         volumeMounts:
-        - mountPath: /host/proc
-          mountPropagation: HostToContainer
-          name: proc
-          readOnly: true
         - name: local-data
           mountPath: /data
         - name: remote-data
