@@ -30,5 +30,5 @@ spec:
           # right... what we can do is generate isolated subdirectories to staging
           # can also be based on plugin id and all that
           # TODO this needs to be built into run
-          path: /data/uploads/example-plugin
+          path: /uploads/example-plugin
           type: DirectoryOrCreate

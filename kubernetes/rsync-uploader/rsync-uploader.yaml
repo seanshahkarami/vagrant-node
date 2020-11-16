@@ -26,16 +26,16 @@ spec:
             cpu: 250m
             memory: 10Mi
         volumeMounts:
-        - name: local-data
-          mountPath: /data
-        - name: remote-data
+        - name: uploads
+          mountPath: /uploads
+        - name: remote
           mountPath: /remote
       volumes:
-      - name: local-data
+      - name: uploads
         hostPath:
-          path: /data
+          path: /uploads
           type: DirectoryOrCreate
-      - name: remote-data
+      - name: remote
         hostPath:
           path: /remote
           type: DirectoryOrCreate

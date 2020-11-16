@@ -4,7 +4,8 @@ while true; do
     rsync -av \
     --exclude '*.tmp' \
     --remove-source-files \
-    /data /remote
+    /uploads \
+    /remote
 
     sleep 60
 done
