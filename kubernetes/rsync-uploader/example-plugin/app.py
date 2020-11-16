@@ -3,8 +3,8 @@ import time
 import os
 
 while True:
-    filename = f'/data/training-data/{uuid.uuid4()}'
-    metadata = f'/data/training-data/{uuid.uuid4()}.metadata'
+    filename = '/uploads/'+str(uuid.uuid4())
+    metadata = filename+'.metadata'
     
     # write fake data file
     with open(filename+'.tmp', 'w') as f:

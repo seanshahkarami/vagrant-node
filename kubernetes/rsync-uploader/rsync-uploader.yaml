@@ -20,11 +20,11 @@ spec:
         name: rsync-uploader
         resources:
           limits:
-            cpu: 250m
+            cpu: 500m
             memory: 20Mi
           requests:
             cpu: 250m
-            memory: 20Mi
+            memory: 10Mi
         volumeMounts:
         - name: local-data
           mountPath: /data
