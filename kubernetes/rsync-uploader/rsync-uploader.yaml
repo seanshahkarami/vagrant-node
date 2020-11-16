@@ -30,6 +30,9 @@ spec:
           mountPath: /uploads
         - name: remote
           mountPath: /remote
+        - name: upload-key
+          mountPath: "/etc/upload-key"
+          readOnly: true
       volumes:
       - name: uploads
         hostPath:
@@ -39,3 +42,6 @@ spec:
         hostPath:
           path: /remote
           type: DirectoryOrCreate
+      - name: upload-key
+        secret:
+          secretName: fake-upload-key
